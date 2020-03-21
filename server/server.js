@@ -14,6 +14,54 @@ app.get('/getPods', PodController.getPods, (req, res) => {
   res.status(200).json(res.locals.pod);
 });
 
+/////testing code from spek8
+//////////////////////////////////////////
+const { kube } = require('./kubeconfig');
+
+app.get('/service', (req, res) => {
+  kube.listNamespacedService('default')
+    .then((re) => {
+      console.log('service body', re.body);
+      return res.status(200).json(re.body);
+    })
+    .catch((err) => {
+      res.send(err);
+    })
+});
+
+app.get('/ingress', (req, res) => {
+  kube.listNamespacedIngress('default')
+    .then((re) => {
+      console.log('ingress body', re.body);
+      return res.status(200).json(re.body);
+    })
+    .catch((err) => {
+      res.send(err);
+    })
+});
+
+app.get('/deployment', (req, res) => {
+  kube.listNamespacedDeployment('default')
+    .then((re) => {
+      console.log('deployment body', re.body);
+      return res.status(200).json(re.body);
+    })
+    .catch((err) => {
+      res.send(err);
+    })
+});
+
+app.get('/daemonset', (req, res) => {
+  console.log('daemonset body', re.body);
+  kube.listNamespacedDaemonSet('default')
+    .then((re) => {
+      res.json(re.body);
+    });
+});
+///////////////////////////////////////
+
+
+
 // serve html
 app.use('/', (req, res) => {
   res.status(200).sendFile(path.resolve(__dirname, '../dist/index.html'));
