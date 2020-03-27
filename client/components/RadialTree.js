@@ -16,10 +16,11 @@ function compareData(data) {
   if (data.length === 0) return true;
   else {
     if(ref.current.length === 0) return true;
-   //if data lengths are same, do not re-render animation
+    //if data lengths are same, do not re-render animation
     if (ref.current.length === data.length) return false;  
+    //else re-animate
+    return true;
   }
-  return true;
 }
 
 //div to show values on node hover/mouseover
@@ -51,7 +52,6 @@ const RadialTree = ({ data }) => {
       // transform hierarchical data
       //changing width dynamically distorts the graph
       const root = hierarchy(data[0]);
-      // console.log('root', root);
       const treeLayout = tree()
       .size([2 * Math.PI, height/1.5]);
 
