@@ -1,5 +1,6 @@
 const { kube } = require('../kubeconfig');
 const { NodeQuery } = require('../query/NodeQuery');
+const cmd = require('node-cmd');
 
 const NodeController = {};
 
@@ -20,6 +21,21 @@ NodeController.getNodes = (req, res, next) => {
     res.locals.nodes = nodeArray;
     return next();
   });
+};
+
+//middleware to get cpu usage info of nodes
+NodeController.getNodeUsage = (req, res, next) => {
+  cmd.get(
+    `kubectl top node`,
+    function(err, data){
+      if (!err) {
+        console.log('nodeController getNodeUsage data :\n', data)
+        return next();
+      } else {
+        return next(error);
+      }
+    }
+  );
 };
 
 module.exports = NodeController;

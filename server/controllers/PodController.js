@@ -1,5 +1,7 @@
 const { kube } = require('../kubeconfig');
 const { PodQuery } = require('../query/PodQuery');
+const { PodUsageQuery } = require('../query/PodUsageQuery');
+const cmd = require('node-cmd');
 
 const PodController = {};
 
@@ -28,5 +30,37 @@ PodController.getPods = (req, res, next) => {
     return next();
   });
 };
+
+//middleware to get cpu usage info of pods
+PodController.getPodUsage = (req, res, next) => {
+  //get pod's usage info using CLI
+  cmd.get(
+    `kubectl top pod`,
+    function(err, data){
+      if (!err) {
+        // console.log('podController getPodUsage data :\n', data)
+        const result = new PodUsageQuery(data);
+        console.log('podUsage data', result);
+        return next();
+      } else {
+        return next(error);
+      }
+    }
+  );
+}
+
+PodController.getPodUsage2 = (req, res, next) => {
+
+  cmd.get(
+    `curl http://localhost:8081/apis/metrics.k8s.io/v1beta1/namespaces/default/pods/`,
+    (err, data, stderr) => {
+      if (err) return next(err);
+      console.log('data from curl', data);
+      return next();
+    }
+  )
+  
+}
+
 
 module.exports = PodController;
