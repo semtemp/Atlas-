@@ -24,6 +24,7 @@ NodeController.getNodes = (req, res, next) => {
 };
 
 //middleware to get cpu usage info of nodes
+/*
 NodeController.getNodeUsage = (req, res, next) => {
   cmd.get(
     `kubectl top node`,
@@ -37,5 +38,6 @@ NodeController.getNodeUsage = (req, res, next) => {
     }
   );
 };
+*/
 
 module.exports = NodeController;

@@ -14,7 +14,7 @@ app.use(express.json());
 
 // testing to get pods from api
 //changed to pods to test with postman
-app.get('/getPods', PodController.getPods, PodController.getPodUsage, PodController.getPodUsage2,(req, res) => {
+app.get('/getPods', PodController.getPods, /*PodController.getPodUsage,*/ PodController.getPodUsage2, (req, res) => {
   res.status(200).json(res.locals.pod);
 });
 

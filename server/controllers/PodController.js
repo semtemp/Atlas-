@@ -43,19 +43,33 @@ PodController.getPodUsage = (req, res, next) => {
         console.log('podUsage data', result);
         return next();
       } else {
-        return next(error);
+        return next(err);
       }
     }
   );
 }
 
 PodController.getPodUsage2 = (req, res, next) => {
-
   cmd.get(
     `curl http://localhost:8081/apis/metrics.k8s.io/v1beta1/namespaces/default/pods/`,
     (err, data, stderr) => {
       if (err) return next(err);
-      console.log('data from curl', data);
+      
+      //no error
+      const res = JSON.parse(data);
+      // console.log('data from curl, json parsed', res);
+      const podArr = res.items;
+      const resArr = [];
+      // const podName, usageCPU, usageMemory;
+      for (let i = 0; i < podArr.length; i++) {
+        const podObj = {};
+        podObj.podName = podArr[i].metadata.name;
+        podObj.usageCPU = podArr[i].containers[0].usage.cpu;
+        podObj.usageMemory = podArr[i].containers[0].usage.memory;
+        resArr.push(podObj);
+      }
+      console.log('resArr in podCont podUsage2', resArr)
+
       return next();
     }
   )
