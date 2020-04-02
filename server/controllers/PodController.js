@@ -59,8 +59,115 @@ PodController.getPodUsage2 = (req, res, next) => {
       return next();
     }
   )
-  
 }
 
 
 module.exports = PodController;
+
+/////
+/*
+data from curl {
+[1]   "kind": "PodMetricsList",
+[1]   "apiVersion": "metrics.k8s.io/v1beta1",
+[1]   "metadata": {
+[1]     "selfLink": "/apis/metrics.k8s.io/v1beta1/namespaces/default/pods/"     
+[1]   },
+[1]   "items": [
+[1]     {
+[1]       "metadata": {
+[1]         "name": "megamarkets-58c64cc5b5-j28vv",
+[1]         "namespace": "default",
+[1]         "selfLink": "/apis/metrics.k8s.io/v1beta1/namespaces/default/pods/megamarkets-58c64cc5b5-j28vv",
+[1]         "creationTimestamp": "2020-04-02T08:26:34Z"
+[1]       },
+[1]       "timestamp": "2020-04-02T08:26:10Z",
+[1]       "window": "30s",
+[1]       "containers": [
+[1]         {
+[1]           "name": "megamarkets",
+[1]           "usage": {
+[1]             "cpu": "0",
+[1]             "memory": "167804Ki"
+[1]           }
+[1]         }
+[1]       ]
+[1]     },
+[1]     {
+[1]       "metadata": {
+[1]         "name": "megamarkets-58c64cc5b5-4vblk",
+[1]         "namespace": "default",
+[1]         "selfLink": "/apis/metrics.k8s.io/v1beta1/namespaces/default/pods/megamarkets-58c64cc5b5-4vblk",
+[1]         "creationTimestamp": "2020-04-02T08:26:34Z"
+[1]       },
+[1]       "timestamp": "2020-04-02T08:26:10Z",
+[1]       "window": "30s",
+[1]       "containers": [
+[1]         {
+[1]           "name": "megamarkets",
+[1]           "usage": {
+[1]             "cpu": "0",
+[1]             "memory": "166288Ki"
+[1]           }
+[1]         }
+[1]       ]
+[1]     },
+[1]     {
+[1]       "metadata": {
+[1]         "name": "megamarkets-58c64cc5b5-c52zt",
+[1]         "namespace": "default",
+[1]         "selfLink": "/apis/metrics.k8s.io/v1beta1/namespaces/default/pods/megamarkets-58c64cc5b5-c52zt",
+[1]         "creationTimestamp": "2020-04-02T08:26:34Z"
+[1]       },
+[1]       "timestamp": "2020-04-02T08:26:15Z",
+[1]       "window": "30s",
+[1]       "containers": [
+[1]         {
+[1]           "name": "megamarkets",
+[1]           "usage": {
+[1]             "cpu": "0",
+[1]             "memory": "169708Ki"
+[1]           }
+[1]         }
+[1]       ]
+[1]     },
+[1]     {
+[1]       "metadata": {
+[1]         "name": "megamarkets-58c64cc5b5-kmhxr",
+[1]         "namespace": "default",
+[1]         "selfLink": "/apis/metrics.k8s.io/v1beta1/namespaces/default/pods/megamarkets-58c64cc5b5-kmhxr",
+[1]         "creationTimestamp": "2020-04-02T08:26:34Z"
+[1]       },
+[1]       "timestamp": "2020-04-02T08:25:57Z",
+[1]       "window": "30s",
+[1]       "containers": [
+[1]         {
+[1]           "name": "megamarkets",
+[1]           "usage": {
+[1]             "cpu": "0",
+[1]             "memory": "167240Ki"
+[1]           }
+[1]         }
+[1]       ]
+[1]     },
+[1]     {
+[1]       "metadata": {
+[1]         "name": "megamarkets-58c64cc5b5-5xjwf",
+[1]         "namespace": "default",
+[1]         "selfLink": "/apis/metrics.k8s.io/v1beta1/namespaces/default/pods/megamarkets-58c64cc5b5-5xjwf",
+[1]         "creationTimestamp": "2020-04-02T08:26:34Z"
+[1]       },
+[1]       "timestamp": "2020-04-02T08:26:24Z",
+[1]       "window": "30s",
+[1]       "containers": [
+[1]         {
+[1]           "name": "megamarkets",
+[1]           "usage": {
+[1]             "cpu": "0",
+[1]             "memory": "172748Ki"
+[1]           }
+[1]         }
+[1]       ]
+[1]     }
+[1]   ]
+[1] }
+*/
