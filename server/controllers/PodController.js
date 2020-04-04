@@ -53,14 +53,15 @@ PodController.getPodUsage2 = (req, res, next) => {
   cmd.get(
     `curl http://localhost:8081/apis/metrics.k8s.io/v1beta1/namespaces/default/pods/`,
     (err, data, stderr) => {
+      //error
       if (err) return next(err);
       
       //no error
+      //parse the string result into json object
       const res = JSON.parse(data);
-      // console.log('data from curl, json parsed', res);
       const podArr = res.items;
       const resArr = [];
-      // const podName, usageCPU, usageMemory;
+      //format info needed for pod usage + push into resArr
       for (let i = 0; i < podArr.length; i++) {
         const podObj = {};
         podObj.podName = podArr[i].metadata.name;
@@ -69,6 +70,7 @@ PodController.getPodUsage2 = (req, res, next) => {
         resArr.push(podObj);
       }
       console.log('resArr in podCont podUsage2', resArr)
+      res.locals.podUsage = resArr;
 
       return next();
     }
