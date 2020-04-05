@@ -40,7 +40,7 @@ const RadialTree = ({ data }) => {
   useEffect(() => {
     if (data.length !== 0) {
       // IF VALID DATA WAS PASSED
-      // console.log('data in radialTree', data)
+      console.log('data in radialTree', data)
       const svg = select(svgRef.current);
 
       // use dimensions from useResizeObserver,
@@ -83,11 +83,25 @@ const RadialTree = ({ data }) => {
           const length = this.getTotalLength();
           return `${length} ${length}`;
         })
-        .attr('stroke', '#bfbfbf')
-        .attr('fill', function(d) {
-          if (d.depth == 0) return '#f8b58c'; //services - salmon
-          if (d.depth == 1) return '#0788ff'; //nodes - blue
-          if (d.depth == 2) return '#ccccff';
+        .attr('stroke', function(d) {
+          // console.log('d', d);
+          let color = '#bfbfbf'; //base color = gray
+          if (d.source.depth === 1) { //only for nodes
+            const podChildren = d.source.data.children; //node's children arr
+            console.log('podChildren in stroke', podChildren)
+            //test
+            // podChildren[0].usage.cpu = '1';
+  
+            //iterate thru arr
+            podChildren.forEach((pod) => {
+              //parse string to int
+              let cpuUse = parseInt(pod.usage.cpu);
+              //if CPU usage increased, return red color
+              if (cpuUse > 0) color = '#ee2c2c';
+              //'#03e0a0' //mint
+            })
+          }
+          return color;
         })
         .attr('opacity', 1);
 
@@ -162,7 +176,13 @@ const RadialTree = ({ data }) => {
               d.data.podIP +
               '<br/>' +
               '<b>created: </b>' +
-              d.data.createdAt;
+              d.data.createdAt +
+              '<br/>' +
+              '<b>CPU usage: </b>' +
+              d.data.usage.cpu + 'm' + 
+              '<br/>' +
+              '<b>memory usage: </b>' +
+              d.data.usage.memory;
           }
 
           div

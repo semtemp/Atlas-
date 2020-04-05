@@ -31,7 +31,7 @@ PodController.getPods = (req, res, next) => {
   });
 };
 
-//middleware to get cpu usage info of pods
+//middleware to get cpu usage info of pods using CLI
 PodController.getPodUsage = (req, res, next) => {
   //get pod's usage info using CLI
   cmd.get(
@@ -49,6 +49,7 @@ PodController.getPodUsage = (req, res, next) => {
   );
 }
 
+//using CLI + curl command
 PodController.getPodUsage2 = (req, res, next) => {
   cmd.get(
     `curl http://localhost:8081/apis/metrics.k8s.io/v1beta1/namespaces/default/pods/`,
@@ -58,8 +59,8 @@ PodController.getPodUsage2 = (req, res, next) => {
       
       //no error
       //parse the string result into json object
-      const res = JSON.parse(data);
-      const podArr = res.items;
+      const result = JSON.parse(data);
+      const podArr = result.items;
       const resArr = [];
       //format info needed for pod usage + push into resArr
       for (let i = 0; i < podArr.length; i++) {
@@ -69,9 +70,7 @@ PodController.getPodUsage2 = (req, res, next) => {
         podObj.usageMemory = podArr[i].containers[0].usage.memory;
         resArr.push(podObj);
       }
-      console.log('resArr in podCont podUsage2', resArr)
-      res.locals.podUsage = resArr;
-
+      res.locals.usage = resArr;
       return next();
     }
   )

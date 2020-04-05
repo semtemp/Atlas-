@@ -20,7 +20,8 @@ const Pods = () => {
       const result = await axios.get('/getPods');
 
       pod = []; //empty the pod before updating with fetched data
-      setPod(pod.push(result.data));
+  
+      setPod(pod.push(result.data.pod)); //edited to only pull data on pod
       console.log('pods', pod);
 
       const podList = pod[0].map((p, i) => {

@@ -7,11 +7,24 @@ import DashBoard from '../components/Dashboard.jsx';
 const Visualizer = () => {
   let [data, setData] = useState([]);
   let [pod, setPod] = useState([]);
+  let [podUsage, setPodUsage] = useState([]);
   let [node, setNode] = useState([]);
   let [service, setService] = useState([]);
 
   // getPods, getNodes, getServices:
   // helper functions for formating fetched info for d3 visualization
+  function getPodUsage(name) {
+    const obj = {};
+    for (let i = 0; i < podUsage.length; i++) {
+      //if pod name matches, include usage information 
+      if (name == podUsage[i].podName) {
+        obj.cpu = podUsage[i].usageCPU;
+        obj.memory = podUsage[i].usageMemory;
+      }
+    }
+    return obj;
+  }
+
   function getPods(parent) {
     const podArr = [];
     for (let i = 0; i < pod.length; i++) {
@@ -25,6 +38,7 @@ const Visualizer = () => {
         podObj.createdAt = pod[i].createdAt;
         podObj.parent = pod[i].nodeName;
         podObj.labels = pod[i].labels;
+        podObj.usage = getPodUsage(pod[i].name); //object with cpu and memory properties
         podArr.push(podObj);
       }
     }
@@ -66,36 +80,41 @@ const Visualizer = () => {
   useEffect(() => {
     // fetch service, node, pod info
     const fetchInfo = async () => {
+      //array to store fetched data
+      //initialized everytime
       service = [];
       node = [];
       pod = [];
+      podUsage = [];
 
       const serviceReq = axios.get('/getServices');
       const nodeReq = axios.get('/getNodes');
       const podReq = axios.get('/getPods');
 
+      //use axios.all to wait for returned data on all 3 calls
       const res = await axios.all([serviceReq, nodeReq, podReq]);
 
+      //set returned data as constants - identify based on their index
       const serviceRes = res[0].data;
       const nodeRes = res[1].data;
-      const podRes = res[2].data;
+      const podRes = res[2].data.pod; //data on pods
+      const podUsageRes = res[2].data.usage; //data on pod usage
 
       setService(service.push(...serviceRes));
       setNode(node.push(...nodeRes));
       setPod(pod.push(...podRes));
+      setPodUsage(podUsage.push(...podUsageRes));
 
       //const dataRes = getServices();
-      //setData(data.push(...dataRes)); //doesn't work????
+      //setData(data.push(...dataRes)); //doesn't work
       setData(getServices()); //set data
     };
     // fetchInfo();
     const fetchOnLoad = () => {
       if (!data[0]) {
-        // console.log('First fetch called');
         fetchInfo();
       }
       setInterval(() => {
-        // console.log('setInterval called');
         fetchInfo();
       }, 5000);
     };
