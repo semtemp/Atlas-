@@ -1,13 +1,10 @@
 import React from 'react';
-import { Nav, NavDropdown, NavItem } from 'react-bootstrap';
+import { Nav, NavDropdown } from 'react-bootstrap';
 import { BrowserRouter as Link, NavLink } from 'react-router-dom';
 
 import white from '../assets/whiteLogo.png';
 
 const Dashboard = () => {
-  const scrollHere = (here) => {
-    document.getElementById({here}).scrollIntoView();
-  }
 
   return (
     <div className='topNavbar'>
